@@ -8,14 +8,14 @@ from pydantic import BaseModel
 app = FastAPI(title="API Test")
 
 
-class Tache(BaseModel):
+class User(BaseModel):
     """Structure"""
 
     titre: str
     faite: bool = False
 
 
-taches = {}
+users = {}
 compteur_id = count(1)
 
 
@@ -26,46 +26,50 @@ def accueil():
     return {"message": "L'API est activé"}
 
 
-@app.get("/taches")
-def lister_taches():
+@app.get("/users")
+def lister_users():
     """Méthode GET"""
 
-    return taches
+    return users
 
 
-@app.get("/taches/{tache_id}")
-def lire_tache(tache_id: int):
+@app.get("/users/{user_id}")
+def lire_user(user_id: int):
     """Méthode GET/{id}"""
 
-    if tache_id not in taches:
-        raise HTTPException(status_code=404, detail="Tâche introuvable")
-    return taches[tache_id]
+    if user_id not in users:
+        raise HTTPException(status_code=404, detail="Utilisateur introuvable")
+
+    return users[user_id]
 
 
-@app.post("/taches")
-def creer_tache(tache: Tache):
+@app.post("/users")
+def creer_user(user: User):
     """Méthode POST"""
 
     nouvel_id = next(compteur_id)
-    taches[nouvel_id] = tache
-    return {"id": nouvel_id, "tache": tache}
+    users[nouvel_id] = user
+
+    return {"id": nouvel_id, "user": user}
 
 
-@app.put("/taches/{tache_id}")
-def modifier_tache(tache_id: int, tache: Tache):
+@app.put("/users/{user_id}")
+def modifier_user(user_id: int, user: User):
     """Méthode PUT"""
 
-    if tache_id not in taches:
-        raise HTTPException(status_code=404, detail="Tâche introuvable")
-    taches[tache_id] = tache
-    return {"id": tache_id, "tache": tache}
+    if user_id not in users:
+        raise HTTPException(status_code=404, detail="Utilisateur introuvable")
+    users[user_id] = user
+
+    return {"id": user_id, "user": user}
 
 
-@app.delete("/taches/{tache_id}")
-def supprimer_tache(tache_id: int):
+@app.delete("/users/{user_id}")
+def supprimer_user(user_id: int):
     """Méthode DELETE"""
 
-    if tache_id not in taches:
-        raise HTTPException(status_code=404, detail="Tâche introuvable")
-    del taches[tache_id]
-    return {"message": "Tâche supprimée"}
+    if user_id not in users:
+        raise HTTPException(status_code=404, detail="Utilisateur introuvable")
+    del users[user_id]
+
+    return {"message": "Utilisateur supprimée"}
