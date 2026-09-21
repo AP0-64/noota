@@ -1,4 +1,6 @@
 """Importation"""
+from itertools import count
+
 from fastapi import FastAPI, HTTPException
 from pydantic import BaseModel
 
@@ -15,7 +17,8 @@ class Tache(BaseModel):
 
 # DB (un simple dictionnaire en mémoire)
 taches = {}
-PROCHAIN_ID = 1
+# Compteur qui donne 1, puis 2, puis 3... à chaque appel de next()
+compteur_id = count(1)
 
 
 @app.get("/")
@@ -45,10 +48,9 @@ def lire_tache(tache_id: int):
 def creer_tache(tache: Tache):
     """Méthode POST"""
 
-    global PROCHAIN_ID
-    taches[PROCHAIN_ID] = tache
-    PROCHAIN_ID += 1
-    return {"id": PROCHAIN_ID - 1, "tache": tache}
+    nouvel_id = next(compteur_id)
+    taches[nouvel_id] = tache
+    return {"id": nouvel_id, "tache": tache}
 
 
 @app.put("/taches/{tache_id}")
