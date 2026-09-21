@@ -1,3 +1,4 @@
+"""Importation"""
 from fastapi import FastAPI, HTTPException
 from pydantic import BaseModel
 
@@ -5,8 +6,9 @@ from pydantic import BaseModel
 app = FastAPI(title="API Test")
 
 
-# Format
 class Tache(BaseModel):
+    """Structure"""
+
     titre: str
     faite: bool = False
 
