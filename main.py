@@ -15,9 +15,7 @@ class Tache(BaseModel):
     faite: bool = False
 
 
-# DB (un simple dictionnaire en mémoire)
 taches = {}
-# Compteur qui donne 1, puis 2, puis 3... à chaque appel de next()
 compteur_id = count(1)
 
 
