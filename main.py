@@ -4,7 +4,6 @@ from itertools import count
 from fastapi import FastAPI, HTTPException
 from pydantic import BaseModel
 
-# Création app
 app = FastAPI(title="API Test")
 
 
