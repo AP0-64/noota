@@ -13,21 +13,27 @@ class Tache(BaseModel):
 
 # DB (un simple dictionnaire en mémoire)
 taches = {}
-prochain_id = 1
+PROCHAIN_ID = 1
 
 
 @app.get("/")
 def accueil():
-    return {"message": "Bienvenue sur l'API Todo !"}
+    """Route test"""
+
+    return {"message": "L'API est activé"}
 
 
 @app.get("/taches")
 def lister_taches():
+    """Méthode GET"""
+
     return taches
 
 
 @app.get("/taches/{tache_id}")
 def lire_tache(tache_id: int):
+    """Méthode GET/{id}"""
+
     if tache_id not in taches:
         raise HTTPException(status_code=404, detail="Tâche introuvable")
     return taches[tache_id]
@@ -35,14 +41,18 @@ def lire_tache(tache_id: int):
 
 @app.post("/taches")
 def creer_tache(tache: Tache):
-    global prochain_id
-    taches[prochain_id] = tache
-    prochain_id += 1
-    return {"id": prochain_id - 1, "tache": tache}
+    """Méthode POST"""
+
+    global PROCHAIN_ID
+    taches[PROCHAIN_ID] = tache
+    PROCHAIN_ID += 1
+    return {"id": PROCHAIN_ID - 1, "tache": tache}
 
 
 @app.put("/taches/{tache_id}")
 def modifier_tache(tache_id: int, tache: Tache):
+    """Méthode PUT"""
+
     if tache_id not in taches:
         raise HTTPException(status_code=404, detail="Tâche introuvable")
     taches[tache_id] = tache
@@ -51,6 +61,8 @@ def modifier_tache(tache_id: int, tache: Tache):
 
 @app.delete("/taches/{tache_id}")
 def supprimer_tache(tache_id: int):
+    """Méthode DELETE"""
+
     if tache_id not in taches:
         raise HTTPException(status_code=404, detail="Tâche introuvable")
     del taches[tache_id]
